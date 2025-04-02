@@ -1,0 +1,12 @@
+# Entornos y configuraciones
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env*.local
+
+.pnpm-store/
+node_modules/
+.pnpm-debug.log
+pnpm-lock.yaml
