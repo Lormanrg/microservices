@@ -14,10 +14,10 @@ app.post("/events", async (req: Request, res: Response) => {
     try {
         await Promise.all([
 
-            axios.post('http://localhost:4004/events', event),
+            axios.post('http://localhost:4000/events', event),
+            axios.post('http://localhost:4002/events', event),
             axios.post('http://localhost:4003/events', event),
-            axios.post('http://localhost:4007/events', event),
-            axios.post('http://localhost:4006/events', event)
+            axios.post('http://localhost:4004/events', event)
         ])
     } catch (error) {
         console.log(error)
@@ -27,6 +27,6 @@ app.post("/events", async (req: Request, res: Response) => {
     res.send({ status: 'OK' })
 })
 
-app.listen(4005, () => {
-    console.log("Listening on 4005")
+app.listen(4001, () => {
+    console.log("Listening on 4001")
 })

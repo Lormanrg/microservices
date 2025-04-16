@@ -39,7 +39,7 @@ app.post('/posts/:id/comments', (req, res) => {
 
     commentsByPostId[req.params.id] = comments;
 
-    axios.post('http://localhost:4005/events', {
+    axios.post('http://localhost:4001/events', {
         type: 'CommentCreated',
         data: {
             id: commentId,
@@ -70,7 +70,7 @@ app.post('/events', async (req: Request, res: Response) => {
         }
         try {
 
-            await axios.post('http://localhost:4005/events', {
+            await axios.post('http://localhost:4001/events', {
                 type: 'CommentUpdated',
                 data: {
                     id,
@@ -87,6 +87,6 @@ app.post('/events', async (req: Request, res: Response) => {
     res.send({ status: 'OK' })
 })
 
-app.listen(4002, () => {
-    console.log('Listening on 4002');
+app.listen(4000, () => {
+    console.log('Listening on 4000');
 })

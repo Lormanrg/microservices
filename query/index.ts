@@ -1,9 +1,25 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import { Post } from '../posts/index';
-import { Comments, Status } from '../comments/index';
 
+export interface Post {
+    id: string
+    title: string
+    comments: { id: string, content: string, status: Status }[]
+}
+export interface Comments {
+    id: string,
+    content: string
+    status: Status
+}
+
+
+
+export enum Status {
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+    PENDING = 'pending'
+}
 
 const app = express();
 app.use(bodyParser.json());
@@ -39,14 +55,26 @@ app.post('/events', (req: Request, res: Response) => {
 
 
     }
+    if (type === 'CommentUpdated') {
+        const { id, content, postId, status } = data
+
+        const post = posts[postId]
+
+        const comment = post.comments.find(comment => {
+            return comment.id === id
+
+        })
+        if (comment) {
+            comment.status = status
+            comment.content = content
+        }
+
+    }
     console.log(posts)
 
     res.send({})
 })
 
-
-
-
-app.listen(4004, () => {
-    console.log("Listening on 4004")
+app.listen(4004, (data) => {
+    console.log('Listening on 4004')
 })

@@ -36,7 +36,7 @@ app.post("/posts", async (req, res) => {
 
     posts[id] = post;
 
-    await axios.post('http://localhost:4005/events', {
+    await axios.post('http://localhost:4001/events', {
         type: 'PostCreated',
         data: {
             id, title, comments: []
