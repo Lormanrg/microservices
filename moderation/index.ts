@@ -27,27 +27,32 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/events', async (req: Request, res: Response) => {
+    try {
+        const { type, data } = req.body
 
-    const { type, data } = req.body
+        if (type === 'CommentCreated') {
 
-    if (type === 'CommentCreated') {
+            const commentData = data as CommentData
+            const status = commentData.content.includes('orange') ? 'rejected' : 'approved'
 
-        const commentData = data as CommentData
-        const status = commentData.status.includes('orange') ? 'rejected' : 'approved'
+            await axios.post('http://localhost:4001/events', {
+                type: 'CommentModerated',
+                data: {
+                    id: commentData.id,
+                    postId: commentData.postId,
+                    content: commentData.content,
+                    status
+                }
 
-        await axios.post('localhost://localhost:4001/events', {
-            type: 'CommentModerated',
-            data: {
-                id: commentData.id,
-                postId: commentData.postId,
-                content: commentData.content,
-                status
-            }
+            })
+        }
 
-        })
+
+    } catch (error) {
+        console.error('Error processing event:', error)
     }
-
     res.send({})
+
 })
 
 app.listen(4002, () => {
